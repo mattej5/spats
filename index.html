@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Form</title>
+    <script>
+        function sendMessage(event) {
+            event.preventDefault();  // Prevent the form from submitting the default way
+
+            var message = document.getElementById("message").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/process", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var responseDiv = document.getElementById("response");
+                    responseDiv.innerHTML += "<p>" + xhr.responseText + "</p>";
+                }
+            };
+
+            xhr.send(JSON.stringify({message: message}));
+        }
+    </script>
+</head>
+<body>
+    <form onsubmit="sendMessage(event)">
+        <label for="message">Message STU:</label><br>
+        <textarea id="message" name="message" rows="3" cols="50"></textarea><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <div id="response"></div>
+</body>
+</html>
